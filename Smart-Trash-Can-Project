@@ -1,0 +1,50 @@
+ #include <Servo.h>
+
+Servo myservo;
+
+int TrgPin = A0; // 设置超声波发收引脚为A0 Set the ultrasonic sending pin
+int EcoPin = A1; // 设置超声波接收引脚为A0 Set the ultrasonic receiving pin
+int PWM = 3; //设置9g舵机控制引脚  Set 9G steering gear signal pin
+float dist;
+
+void setup() {
+  
+  myservo.attach(PWM); // put your setup code here, to run once:
+  Serial.begin(9600); // Set the serial port Baud rate
+  pinMode(TrgPin, OUTPUT); // Set TrgPin to the output state
+  pinMode(EcoPin, INPUT); // Set EcoPin to the input state
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(TrgPin, LOW);
+  delayMicroseconds(8);
+  digitalWrite(TrgPin, HIGH); // Write high level
+  delayMicroseconds(10); // Maintain a 10 ms high level to generate a pulse
+  digitalWrite(TrgPin, LOW); // Read the pulse width
+  dist = pulseIn(EcoPin, HIGH) / 58.00;// Convert to distance
+  Serial.print("Distance:");
+  Serial.print(dist);
+  Serial.println("cm");
+  delay(300);
+  
+ if (dist < 7){
+   
+        myservo.write(240);
+        delay(20);
+   
+  } else {
+  
+      myservo.write(0);
+      delay(20);
+
+  }
+  
+    
+ 
+  
+  
+ 
+
+  
+}
